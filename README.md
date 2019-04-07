@@ -7,15 +7,15 @@
  
 # Dependencies
 ## Python (UI and Raspberry Pi)
- google-api-python-client
- Pillow
- PyQt5
- (PyQt5-tools)
- matplotlib
- (fbs)
+ - google-api-python-client
+ - Pillow
+ - PyQt5
+ - (PyQt5-tools)
+ - matplotlib
+ - (fbs)
 ## Arduino
- jarzebski’s Arduino library for the MPU6050: https://github.com/jarzebski/Arduino-MPU6050
- TinyGPS++: https://github.com/mikalhart/TinyGPSPlus
- DHTlib: https://github.com/RobTillaart/Arduino/tree/master/libraries/DHTlib
+ - jarzebski’s Arduino library for the MPU6050: https://github.com/jarzebski/Arduino-MPU6050
+ - TinyGPS++: https://github.com/mikalhart/TinyGPSPlus
+ - DHTlib: https://github.com/RobTillaart/Arduino/tree/master/libraries/DHTlib
 
  
