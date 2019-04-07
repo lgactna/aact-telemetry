@@ -37,7 +37,7 @@
  ## User Interface
   These files are setup similarly to the venv used to build the standalone executable through fbs. The final standalone installer was built with the 32-bit version of Python 3.7 (which is not supported by fbs, but works anyways); it has not been included in this folder since it contains the original client_secret.json and credentials.json files. However, it installs the equivalent of /src (with the necessary dependencies) to a specified directory.
   
-  Thanks to fbs, the UI should be cross-platform, though on platforms other than Windows is untested.
+  You can find the installer under Releases. Thanks to fbs, the UI should be cross-platform, though on platforms other than Windows is untested.
   
   Further details can be found in the guide mentioned above.
   
