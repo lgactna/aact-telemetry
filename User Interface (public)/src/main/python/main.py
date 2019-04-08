@@ -128,6 +128,8 @@ def reset_vars():
     global y2
     global x_map
     global y_map
+    global current_section
+    global elapsed_section_time
     starting_row = 2
     timeout = 10
     failed_attempts = 0 # The amount of times the client has found no new data.
@@ -147,6 +149,8 @@ def reset_vars():
     y2 = []
     x_map = []
     y_map = []
+    current_section = ''
+    elapsed_section_time = 0
 
 def update_from_db(initial=False,initial_row=2,initial_timeout=10):
     global starting_row
@@ -170,11 +174,16 @@ def update_from_db(initial=False,initial_row=2,initial_timeout=10):
         timeout = initial_timeout
     else:
         pass
-    if len(queue) < 4: #Only attempt to read new data if there are less than four seconds of data remaining. 
+    if len(queue) < 4 and initial:
         conn = sqlite3.connect(db_target)
         c = conn.cursor()
         c.execute('SELECT * FROM data')
-        response = c.fetchall()
+        initial = c.fetchall()
+        response = []
+        for i in initial:
+            response.append(list(i))
+        for i in range(0,last_read):
+            del response[0]
         if len(response) == 2:
             failed_attempts += 1
             if failed_attempts >= timeout:
@@ -208,6 +217,8 @@ def update_from_db(initial=False,initial_row=2,initial_timeout=10):
             first_read = True #In case there wasn't a duplicate, so this won't be triggered next round.
             last_read += len(response)
             failed_attempts = 0
+    elif len(queue) < 1 and not initial:
+        halt = True
     if len(queue) > 0:
         if int(queue[0][0]) - last_read_timestamp > 1 and last_read_timestamp != 0:
             print('attempting to heal data after timestamp %s'%last_read_timestamp) # if data is missing, replace it with the last known values. this should never occur for more than one or two readings.
@@ -535,6 +546,7 @@ class ApplicationWindow(QtWidgets.QMainWindow,Ui_MainWindow):
                 elapsed_section_time += 1
             else:
                 current_section = region_data[0]
+                elapsed_section_time = 0
             section_minutes = elapsed_section_time // 60
             section_seconds = elapsed_section_time % 60
             self.label_34.setText("%01i:%02i"%(section_minutes,section_seconds))
@@ -562,6 +574,9 @@ class ApplicationWindow(QtWidgets.QMainWindow,Ui_MainWindow):
         except Exception as e:
             print(e)
     def start_db(self):
+        global using_db
+        if isActive:
+            self.toggle_reading()
         using_db = True
         self.label_54.setText("(Database)")
     def open_about_dialog(self):
